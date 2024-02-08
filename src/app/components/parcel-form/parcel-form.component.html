@@ -1,0 +1,120 @@
+<div class="content">
+  <mat-card class="parcel-form-card">
+    <mat-card-header class="parcel-form-title">
+      <mat-card-title>Add a new Parcel</mat-card-title>
+    </mat-card-header>
+    <mat-card-content class="parcel-form-container">
+      <ngx-skeleton-loader
+        *ngIf="!countries"
+        appearance="rectangle"
+        [theme]="{
+                height: '60px',
+                marginBottom: '40px',
+                border: '1px solid gray',
+                borderRadius: '10px',
+                background: 'transparent'
+              }"
+        [count]="6"
+      ></ngx-skeleton-loader>
+      <form class="parcel-form" [formGroup]="parcelForm" (ngSubmit)="onSubmit(parcelForm.value)" *ngIf="countries">
+        <mat-form-field class="parcel-field" appearance="outline">
+          <input
+            type="text"
+            placeholder="Parcel SKU"
+            formControlName="SKU"
+            matInput
+            required
+          >
+          <mat-error
+            *ngIf="parcelForm.get('SKU')?.hasError('exists')"
+          >
+            SKU already <strong>exists</strong>
+          </mat-error>
+          <mat-error *ngIf="parcelForm.controls.SKU.errors?.['minlength']">
+            SKU must be at least 5 characters
+          </mat-error>
+          <mat-error *ngIf="parcelForm.controls.SKU.errors?.['required']">
+            SKU is required
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field class="parcel-field" appearance="outline">
+          <textarea
+            placeholder="Description"
+            formControlName="description"
+            matInput
+            required
+          ></textarea>
+          <mat-error *ngIf="parcelForm.controls.description.errors?.['required']">
+            Description is required
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field class="parcel-field" appearance="outline">
+          <mat-select
+            required
+            placeholder="Country"
+            formControlName="country"
+          >
+            <mat-option *ngFor="let country of countries" [value]="country.id">
+              <span><img class="country-flag" [src]="country.flag" [alt]="country.name"/> {{country.name}}</span>
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="parcelForm.controls.country.errors?.['required']">
+            Country is required
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field class="parcel-field" appearance="outline">
+          <input
+            type="text"
+            placeholder="Town"
+            formControlName="town"
+            matInput
+            required
+          >
+          <mat-error *ngIf="parcelForm.controls.town.errors?.['required']">
+            Town is required
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field class="parcel-field" appearance="outline">
+          <input
+            type="text"
+            placeholder="Street Address"
+            formControlName="street"
+            matInput
+            required
+          >
+          <mat-error *ngIf="parcelForm.controls.street.errors?.['required']">
+            Street is required
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field class="parcel-field" appearance="outline">
+          <mat-label>Delivery date</mat-label>
+          <input matInput [matDatepicker]="picker" [min]="today" formControlName="deliveryDate" readonly>
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker ngDefaultControl></mat-datepicker>
+          <mat-error *ngIf="parcelForm.controls.deliveryDate.errors?.['required']">
+            Delivery date is required
+          </mat-error>
+        </mat-form-field>
+
+        <mat-card-actions>
+          <button
+            [class.spinner]="isFormSubmitting"
+            [disabled]="isFormSubmitting"
+            type="submit"
+            class="parcel-form-button"
+            color="primary"
+            mat-flat-button
+            mat-button
+          >
+            Submit
+          </button>
+        </mat-card-actions>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>

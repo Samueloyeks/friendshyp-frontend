@@ -1,0 +1,45 @@
+@use '@angular/material' as mat;
+
+$open-sans-typography: mat.define-typography-config($font-family: '"Comfortaa", sans-serif');
+@include mat.typography-hierarchy($open-sans-typography);
+
+$app-theme: mat.define-light-theme((
+  typography: $open-sans-typography
+));
+
+@include mat.all-component-themes($app-theme);
+
+html, body {
+  height: 100%;
+  background: url('^assets/background.jpg') no-repeat center center fixed;
+  -webkit-background-size: cover;
+  -o-background-size: cover;
+  -moz-background-size: cover;
+  background-size: cover;
+}
+
+body {
+  margin: 0;
+}
+
+.green-snackbar {
+  background: rgb(65, 252, 134);
+  color: white;
+}
+
+.green-snackbar button {
+  background-color: rgb(65, 252, 134);
+  color: white;
+  border: none;
+}
+
+.red-snackbar {
+  background: #F44336;
+  color: white;
+}
+
+.red-snackbar button {
+  background-color: #F44336;
+  color: white !important;
+  border: none;
+}
